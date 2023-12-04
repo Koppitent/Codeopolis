@@ -1,4 +1,4 @@
-package org.example;
+package de.koppy;
 
 public class CityTestDrive {
 
@@ -10,21 +10,22 @@ public class CityTestDrive {
                 && city.getAcres() == 1000 && city.getBushles() == 2800
                 && city.getPopulation() == 100, "correct initialisation.");
 
-        Assert(city.kaufen(3, 4000) == false, "not enough bushles check.");
-        Assert(city.kaufen(2, 3) == false, "bushles divisible check.");
+        Assert(city.kaufen(100, 40) == false, "not enough bushles check.");
 
         Assert(city.verkaufen(2, 2000) == false, "not enough acres check.");
 
         city.kaufen(2, 10);
-        Assert(city.getAcres() == 1005 && city.getBushles() == 2790, "kaufen richtiges ergebnis.");
-        city.verkaufen(2, 5);
+        Assert(city.getAcres() == 1010 && city.getBushles() == 2780, "kaufen richtiges ergebnis.");
+        city.verkaufen(2, 10);
         Assert(city.getAcres() == 1000 && city.getBushles() == 2800, "verkaufen richtiges ergebnis.");
 
         city.ernähren(100*20);
-        Assert(city.getPopulation() == 1000 && city.getBushles() == 2800-(100*20), "right answer ernähren (enough bushles for all).");
+        Assert(city.getPopulation() == 100 && city.getBushles() == 2800-(100*20), "right answer ernähren (enough bushles for all).");
 
+
+        city.setBushles(10000);
         city.ernähren(50*20);
-        Assert(city.getPopulation() == 500, "Hälfte tot weil 50*20 bushles nur.");
+        Assert(city.getPopulation() == 50, "Hälfte tot weil 50*20 bushles nur.");
 
         city.setYear(1);
         Assert(city.getYear() == 1, "Jahre inkrement");

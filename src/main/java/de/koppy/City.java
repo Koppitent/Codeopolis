@@ -1,4 +1,4 @@
-package org.example;
+package de.koppy;
 
 public class City {
 
@@ -87,6 +87,10 @@ public class City {
     public void setYear(int year) {
         if(year <= this.year) return;
         this.year = year;
+    }
+
+    public void setBushles(int bushles) {
+        this.bushles = bushles;
     }
 
     @Override
