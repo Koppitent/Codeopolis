@@ -2,7 +2,7 @@ package org.example;
 
 public class City {
 
-    private String name;
+    final private String name;
     private int bushles;
     private int acres;
     private int population;
@@ -22,21 +22,19 @@ public class City {
     * kauf/verkauf bezieht sich auf acres!
     *
     */
-    public boolean kaufen(int priceperacre, int bushlestosell) {
-        if(bushlestosell > bushlestosell) return false;
-        //* This if statement also checks if you have enough bushles entered for at least one acre!
-        if(bushlestosell % priceperacre != 0) return false; //* Here would be a remaining bushles which cant give u anything (would be waste)
-        int acretoadd = bushlestosell / priceperacre;
-        this.bushles = this.bushles - bushlestosell;
-        this.acres = this.acres + acretoadd;
+    public boolean kaufen(int priceperacre, int amount) {
+        if(this.bushles < (amount * priceperacre)) return false;
+        if(amount < 0) return false;
+        this.bushles = this.bushles - (amount * priceperacre);
+        this.acres = this.acres + amount;
         return true;
     }
 
-    public boolean verkaufen(int priceperacre, int acrestosell) {
-        if(acrestosell > acres) return false; //* not enough acres in store
-        int bushlestoadd = acrestosell * priceperacre;
-        this.acres = this.acres - acrestosell;
-        this.bushles = this.bushles + bushlestoadd;
+    public boolean verkaufen(int priceperacre, int amount) {
+        if(this.acres < amount) return false;
+        if(amount < 0) return false;
+        this.acres = this.acres - amount;
+        this.bushles = this.bushles + (amount * priceperacre);
         return true;
     }
 

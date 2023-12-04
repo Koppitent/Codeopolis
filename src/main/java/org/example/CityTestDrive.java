@@ -26,6 +26,9 @@ public class CityTestDrive {
         city.ernähren(50*20);
         Assert(city.getPopulation() == 500, "Hälfte tot weil 50*20 bushles nur.");
 
+        city.setYear(1);
+        Assert(city.getYear() == 1, "Jahre inkrement");
+
         //TODO: test .pflanzen() Method
 
         Assert(city.ernähren(0), "ernähren > 0");
