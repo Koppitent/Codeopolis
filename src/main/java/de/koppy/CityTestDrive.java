@@ -10,13 +10,15 @@ public class CityTestDrive {
                 && city.getAcres() == 1000 && city.getBushles() == 2800
                 && city.getPopulation() == 100, "correct initialisation.");
 
-        Assert(city.kaufen(100, 40) == false, "not enough bushles check.");
+        city.setPriceperacre(100);
+        Assert(city.kaufen(40) == false, "not enough bushles check.");
 
-        Assert(city.verkaufen(2, 2000) == false, "not enough acres check.");
+        city.setPriceperacre(2);
+        Assert(city.verkaufen(2000) == false, "not enough acres check.");
 
-        city.kaufen(2, 10);
+        city.kaufen(10);
         Assert(city.getAcres() == 1010 && city.getBushles() == 2780, "kaufen richtiges ergebnis.");
-        city.verkaufen(2, 10);
+        city.verkaufen(10);
         Assert(city.getAcres() == 1000 && city.getBushles() == 2800, "verkaufen richtiges ergebnis.");
 
         city.ernähren(100*20);

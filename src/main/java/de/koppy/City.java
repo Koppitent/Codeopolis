@@ -1,5 +1,7 @@
 package de.koppy;
 
+import java.util.Random;
+
 public class City {
 
     final private String name;
@@ -8,6 +10,7 @@ public class City {
     private int population;
     private int sizefarmland;
     private int year;
+    private int priceperacre;
 
     public City(String name) {
         this.name = name;
@@ -15,6 +18,7 @@ public class City {
         this.acres = 1000;
         this.population = 100;
         this.year = 0;
+        generateNewPriceperacre();
     }
 
     /* price = how many bushles per acre
@@ -22,7 +26,7 @@ public class City {
     * kauf/verkauf bezieht sich auf acres!
     *
     */
-    public boolean kaufen(int priceperacre, int amount) {
+    public boolean kaufen(int amount) {
         if(this.bushles < (amount * priceperacre)) return false;
         if(amount < 0) return false;
         this.bushles = this.bushles - (amount * priceperacre);
@@ -30,7 +34,7 @@ public class City {
         return true;
     }
 
-    public boolean verkaufen(int priceperacre, int amount) {
+    public boolean verkaufen(int amount) {
         if(this.acres < amount) return false;
         if(amount < 0) return false;
         this.acres = this.acres - amount;
@@ -89,6 +93,16 @@ public class City {
         this.year = year;
     }
 
+    public void nextYear() {
+        this.year++;
+        generateNewPriceperacre();
+    }
+
+    private void generateNewPriceperacre() {
+        Random rndm = new Random();
+        this.priceperacre = rndm.nextInt(50);
+    }
+
     public void setBushles(int bushles) {
         this.bushles = bushles;
     }
@@ -97,4 +111,17 @@ public class City {
     public String toString() {
         return "After " + year + " years, the town '" + name + "' inhabits " + population + " people, owns " + acres + " acre, " + bushles + " bushles and plants " + sizefarmland + "farmlands.";
     }
+
+    public void setPriceperacre(int priceperacre) {
+        this.priceperacre = priceperacre;
+    }
+
+    public int getPriceperacre() {
+        return priceperacre;
+    }
+
+    public String getStatus() {
+        return acres + " acres of land, " + bushles + " bushles of grain, " + population + " residents.";
+    }
+
 }
