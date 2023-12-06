@@ -32,8 +32,6 @@ public class CityTestDrive {
         city.setYear(1);
         Assert(city.getYear() == 1, "Jahre inkrement");
 
-        //TODO: test .pflanzen() Method
-
         Assert(city.ernähren(0), "ernähren > 0");
         Assert(city.pflanzen(0), "pflanzen > 0");
 

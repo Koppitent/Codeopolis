@@ -106,7 +106,7 @@ public class TextInterface {
         System.out.println("===== PLANT MENU =====");
         System.out.println("City status: " + city.getStatus());
         System.out.println("Current price per acre: " + city.getPriceperacre());
-        System.out.println("");
+        System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres of land do you wish to plant with seed? ");
@@ -126,8 +126,8 @@ public class TextInterface {
         System.out.println();
     }
 
-
-
-
+    public void resetCity(String newcityname) {
+        this.city = new City(newcityname);
+    }
 
 }
