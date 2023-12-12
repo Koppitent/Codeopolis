@@ -1,7 +1,5 @@
 package de.koppy;
 
-import java.util.Random;
-
 public class CityTestDrive {
 
     public static void startTest() {
@@ -13,10 +11,10 @@ public class CityTestDrive {
                 && city.getPopulation() == 100, "correct initialisation.");
 
         city.setPriceperacre(100);
-        Assert(city.kaufen(40) == false, "not enough bushles check.");
+        Assert(!city.kaufen(40), "not enough bushles check.");
 
         city.setPriceperacre(2);
-        Assert(city.verkaufen(2000) == false, "not enough acres check.");
+        Assert(!city.verkaufen(2000), "not enough acres check.");
 
         city.kaufen(10);
         Assert(city.getAcres() == 1010 && city.getBushles() == 2780, "kaufen richtiges ergebnis.");

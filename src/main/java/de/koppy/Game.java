@@ -3,13 +3,13 @@ package de.koppy;
 public class Game {
 
     private City city;
-    private TextInterface textInterface;
-    private String name;
+    private final TextInterface textInterface;
+    private final String name;
 
     public Game(String name, TextInterface textInterface) {
         this.name = name;
-        this.city = new City(name);
         this.textInterface = textInterface;
+        resetCity();
     }
 
     public TextInterface getTextInterface() {

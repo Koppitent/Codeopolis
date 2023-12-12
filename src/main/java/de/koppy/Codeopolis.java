@@ -1,7 +1,5 @@
 package de.koppy;
 
-import org.w3c.dom.Text;
-
 public class Codeopolis {
     public static void main(String[] args) {
         startTests();
