@@ -1,5 +1,7 @@
 package de.koppy;
 
+import java.util.Random;
+
 public class CityTestDrive {
 
     public static void startTest() {

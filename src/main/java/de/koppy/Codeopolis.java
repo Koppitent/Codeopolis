@@ -1,48 +1,22 @@
 package de.koppy;
 
+import org.w3c.dom.Text;
+
 public class Codeopolis {
     public static void main(String[] args) {
         startTests();
-        TextInterface ti = new TextInterface(new City("Town"));
+        TextInterface ti = new TextInterface();
         boolean apprunning = true;
         while (apprunning) {
             switch (ti.printMainMenu()) {
                 case 1:
                     //* start new game
+                    Game game = new Game("Town", ti);
                     boolean gamerunning = true;
                     while (gamerunning) {
-
-                        switch (ti.printGameMenu()) {
-                            case 1:
-                                //* Buying land
-                                ti.printBuyMenu();
-                                break;
-                            case 2:
-                                //* Selling land
-                                ti.printSellMenu();
-                                break;
-                            case 3:
-                                //* Feeding people
-                                ti.printFeedMenu();
-                                break;
-                            case 4:
-                                //* Planting seeds
-                                ti.printPlantMenu();
-                                break;
-                            case 5:
-                                //* Show Status
-                                ti.printStatusMenu();
-                                break;
-                            case 6:
-                                //* Quit game
-                                System.out.println("Quitting game...");
-                                gamerunning = false;
-                                break;
-                            default:
-                                System.out.println("Invalid Input. Please try again.");
-                                break;
-                        }
-
+                        ti.printGameMenu();
+                        int option = game.getTextInterface().promptInt("Please select an Option: ");
+                        gamerunning = game.executeOption(option);
                     }
                     break;
                 case 2:

@@ -4,6 +4,9 @@ import java.util.Random;
 
 public class City {
 
+    private static final int BUSHLES_PER_PERSON = 20;
+    private static final int ERNTEFAKTOR = 6;
+    private static final int R = 25;
     final private String name;
     private int bushles;
     private int acres;
@@ -11,6 +14,7 @@ public class City {
     private int sizefarmland;
     private int year;
     private int priceperacre;
+    private int bushlesfeedingthisyear;
 
     public City(String name) {
         this.name = name;
@@ -19,6 +23,66 @@ public class City {
         this.population = 100;
         this.year = 0;
         generateNewPriceperacre();
+    }
+
+    public TurnResult runTurn() { //* so gemeint als 'geben sie als Instanz der Klasse zurück'?
+        int starved = calcPeopleStarved();
+        //* Get Info
+        int residents = this.population;
+        int bushles = this.bushles;
+        int year = this.year;
+
+        int starvedPercentage = ((int) ((((double) starved) / ((double) residents)) * 100D));
+        int newresidents = calcNewResidents(starvedPercentage, residents); //* newresidents VOR oder NACH starved? (currently DAVOR)
+        int bushelsHarvested = calcErnte(bushles);
+        int ateByRats = calcRats(bushles); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DAVOR)
+
+        residents = residents - starved;
+        residents = residents + newresidents;
+        bushles = bushles + bushelsHarvested;
+        bushles = bushles - ateByRats;
+        year++;
+        TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, bushles, starved, acres, ateByRats, starvedPercentage);
+
+        //* Set Result
+        this.bushles = tr.getBushels();
+        this.year = tr.getYear();
+        this.population = tr.getResidents();
+
+        return tr;
+    }
+
+    private int calcRats(int currentbushles) {
+        int percentate = new Random().nextInt(R+1);
+        int ateByRats = (int) ((float) currentbushles * ((float) percentate / 100F)); //* schneide rest weg?
+        return ateByRats;
+    }
+
+    private int calcErnte(int currentbushles) {
+        Random rndm = new Random();
+        float z = ((float) (rndm.nextInt(90)+11) / 100F);
+        float ernterate = (float) z * ERNTEFAKTOR;
+        int erntemenge = (int) (ernterate * (float) sizefarmland);
+        if(erntemenge > (Integer.MAX_VALUE-currentbushles)) return (Integer.MAX_VALUE-currentbushles);
+        return erntemenge; //* schneide rest weg?
+    }
+
+    private int calcNewResidents(int starvedPercentage, int residents) {
+        int newresidents = 0;
+        if(starvedPercentage >= 40) return newresidents;
+        int newpercentpeople = new Random().nextInt(41)+100;
+        newresidents = (int) ((double) residents *  ((double) newpercentpeople / 100D)); //* schneide rest weg?
+        if(newresidents > (Integer.MAX_VALUE - residents)) newresidents = (Integer.MAX_VALUE - residents);
+        return newresidents;
+    }
+
+    private int calcPeopleStarved() {
+        int peopleabletofeed = this.bushlesfeedingthisyear / BUSHLES_PER_PERSON;
+        int peoplestarved = 0;
+        if(this.population > peopleabletofeed) {
+            peoplestarved = this.population - peopleabletofeed;
+        }
+        return peoplestarved;
     }
 
     /* price = how many bushles per acre
@@ -45,17 +109,9 @@ public class City {
     public boolean ernähren(int bushlesfeeding) {
         if(bushlesfeeding < 0) return false;
         if(bushlesfeeding > bushles) return false;
-        int peopleabletofeed = bushlesfeeding / 20;
-        if(peopleabletofeed >= population) {
-            //* feeding ALL people possible
-            this.bushles = this.bushles - bushlesfeeding;
-            return true;
-        }else {
-            //* more people in town than able to feed
-            this.population = peopleabletofeed;
-            this.bushles = this.bushles - bushlesfeeding;
-            return true;
-        }
+        this.bushlesfeedingthisyear = this.bushlesfeedingthisyear + bushlesfeeding;
+        this.bushles = this.bushles - bushlesfeeding;
+        return true;
     }
 
     public boolean pflanzen(int acrestoplant) {
