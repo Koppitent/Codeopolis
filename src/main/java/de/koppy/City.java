@@ -26,21 +26,25 @@ public class City {
     }
 
     public TurnResult runTurn() { //* so gemeint als 'geben sie als Instanz der Klasse zurück'?
-        int starved = calcPeopleStarved();
+
         //* Get Info
         int residents = this.population;
         int bushles = this.bushles;
         int year = this.year;
 
-        int starvedPercentage = ((int) ((((double) starved) / ((double) residents)) * 100D));
-        int newresidents = calcNewResidents(starvedPercentage, residents); //* newresidents VOR oder NACH starved? (currently DAVOR)
-        int bushelsHarvested = calcErnte(bushles);
-        int ateByRats = calcRats(bushles); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DAVOR)
-
+        int starved = calcPeopleStarved();
         residents = residents - starved;
+
+        int starvedPercentage = ((int) ((((double) starved) / ((double) residents)) * 100D));
+        int newresidents = calcNewResidents(starvedPercentage, residents); //* newresidents VOR oder NACH starved? (currently DANACH)
         residents = residents + newresidents;
+
+        int bushelsHarvested = calcErnte(bushles);
         bushles = bushles + bushelsHarvested;
+
+        int ateByRats = calcRats(bushles); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DANACH)
         bushles = bushles - ateByRats;
+
         year++;
         TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, bushles, starved, acres, ateByRats, starvedPercentage);
 
@@ -48,6 +52,10 @@ public class City {
         this.bushles = tr.getBushels();
         this.year = tr.getYear();
         this.population = tr.getResidents();
+
+        this.bushlesfeedingthisyear = 0;
+        this.sizefarmland = 0;
+        generateNewPriceperacre();
 
         return tr;
     }
@@ -70,7 +78,7 @@ public class City {
     private int calcNewResidents(int starvedPercentage, int residents) {
         int newresidents = 0;
         if(starvedPercentage >= 40) return newresidents;
-        int newpercentpeople = new Random().nextInt(41)+100;
+        int newpercentpeople = new Random().nextInt(41);
         newresidents = (int) ((double) residents *  ((double) newpercentpeople / 100D)); //* schneide rest weg?
         if(newresidents > (Integer.MAX_VALUE - residents)) newresidents = (Integer.MAX_VALUE - residents);
         return newresidents;
@@ -147,11 +155,6 @@ public class City {
     public void setYear(int year) {
         if(year <= this.year) return;
         this.year = year;
-    }
-
-    public void nextYear() {
-        this.year++;
-        generateNewPriceperacre();
     }
 
     private void generateNewPriceperacre() {
