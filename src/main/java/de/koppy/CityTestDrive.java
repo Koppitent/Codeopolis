@@ -11,10 +11,10 @@ public class CityTestDrive {
                 && city.getPopulation() == 100, "correct initialisation.");
 
         city.setPriceperacre(100);
-        Assert(city.kaufen(40) == false, "not enough bushles check.");
+        Assert(!city.kaufen(40), "not enough bushles check.");
 
         city.setPriceperacre(2);
-        Assert(city.verkaufen(2000) == false, "not enough acres check.");
+        Assert(!city.verkaufen(2000), "not enough acres check.");
 
         city.kaufen(10);
         Assert(city.getAcres() == 1010 && city.getBushles() == 2780, "kaufen richtiges ergebnis.");
@@ -25,16 +25,29 @@ public class CityTestDrive {
         Assert(city.getPopulation() == 100 && city.getBushles() == 2800-(100*20), "right answer ernähren (enough bushles for all).");
 
 
-        city.setBushles(10000);
-        city.ernähren(50*20);
-        Assert(city.getPopulation() == 50, "Hälfte tot weil 50*20 bushles nur.");
-
         city.setYear(1);
         Assert(city.getYear() == 1, "Jahre inkrement");
 
         Assert(city.ernähren(0), "ernähren > 0");
         Assert(city.pflanzen(0), "pflanzen > 0");
 
+        //* NEW CITY
+        city = new City("EdgarTown");
+        int bushles = city.getBushles() - 100*20;
+        int acres = city.getAcres();
+        city.kaufen(10);
+        city.verkaufen(10);
+        city.pflanzen(20);
+        city.ernähren(100*20);
+        TurnResult tr = city.runTurn();
+        bushles = bushles - tr.getAteByRates();
+        int resident = 100 + tr.getNewResidents();
+
+        System.out.println("Some Tests fpr runTurn() Method");
+        Assert(city.getYear() == 1, "correct year");
+        Assert(city.getBushles() == bushles, "correct bushles actual: " + city.getBushles() + ", expected: " + bushles);
+        Assert(city.getPopulation() == resident, "correct people (noone died) acutal: " + city.getPopulation() + ", expected: " + resident);
+        Assert(city.getAcres() == acres, "correct acres");
 
     }
 

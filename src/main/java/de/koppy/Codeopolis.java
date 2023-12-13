@@ -3,7 +3,7 @@ package de.koppy;
 public class Codeopolis {
     public static void main(String[] args) {
         startTests();
-        TextInterface ti = new TextInterface(new City("Town"));
+        TextInterface ti = new TextInterface(new Game("Town"));
         boolean apprunning = true;
         while (apprunning) {
             switch (ti.printMainMenu()) {

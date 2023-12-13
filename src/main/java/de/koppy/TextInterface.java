@@ -4,13 +4,13 @@ import java.util.Scanner;
 
 public class TextInterface {
 
-    private City city;
-    public TextInterface(City city) {
-        this.city = city;
+    private Game game;
+    public TextInterface(Game game) {
+        this.game = game;
     }
 
     public City getCity() {
-        return city;
+        return game.getCity();
     }
 
     public int promptInt(String text) {
@@ -48,15 +48,15 @@ public class TextInterface {
     public void printBuyMenu() {
         System.out.println();
         System.out.println("===== BUY MENU =====");
-        System.out.println("City status: " + city.getStatus());
-        System.out.println("Current price per acre: " + city.getPriceperacre());
+        System.out.println("City status: " + getCity().getStatus());
+        System.out.println("Current price per acre: " + getCity().getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres would you like to buy? ");
-            if (city.kaufen(input)) {
+            if (getCity().kaufen(input)) {
                 System.out.println("You bought " + input + " acres.");
-                System.out.println("New Status: " + city.getStatus());
+                System.out.println("New Status: " + getCity().getStatus());
                 valid = true;
             } else {
                 System.out.println("Buying failed. Please try again");
@@ -67,15 +67,15 @@ public class TextInterface {
     public void printSellMenu() {
         System.out.println();
         System.out.println("===== SELL MENU =====");
-        System.out.println("City status: " + city.getStatus());
-        System.out.println("Current price per acre: " + city.getPriceperacre());
+        System.out.println("City status: " + getCity().getStatus());
+        System.out.println("Current price per acre: " + getCity().getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres would you like to sell? ");
-            if (city.verkaufen(input)) {
+            if (getCity().verkaufen(input)) {
                 System.out.println("You sold " + input + " acres.");
-                System.out.println("New Status: " + city.getStatus());
+                System.out.println("New Status: " + getCity().getStatus());
                 valid = true;
             } else {
                 System.out.println("Selling failed. Please try again!");
@@ -86,14 +86,14 @@ public class TextInterface {
     public void printFeedMenu() {
         System.out.println();
         System.out.println("===== FEED MENU =====");
-        System.out.println("City status: " + city.getStatus());
-        System.out.println("Current price per acre: " + city.getPriceperacre());
+        System.out.println("City status: " + getCity().getStatus());
+        System.out.println("Current price per acre: " + getCity().getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many bushles would you like to feed to your people? ");
-            if (city.ernähren(input)) {
-                System.out.println("New Status: " + city.getStatus());
+            if (getCity().ernähren(input)) {
+                System.out.println("New Status: " + getCity().getStatus());
                 valid = true;
             } else {
                 System.out.println("Feeding failed. Please try again!");
@@ -104,14 +104,14 @@ public class TextInterface {
     public void printPlantMenu() {
         System.out.println();
         System.out.println("===== PLANT MENU =====");
-        System.out.println("City status: " + city.getStatus());
-        System.out.println("Current price per acre: " + city.getPriceperacre());
+        System.out.println("City status: " + getCity().getStatus());
+        System.out.println("Current price per acre: " + getCity().getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres of land do you wish to plant with seed? ");
-            if (city.pflanzen(input)) {
-                System.out.println("New Status: " + city.getStatus());
+            if (getCity().pflanzen(input)) {
+                System.out.println("New Status: " + getCity().getStatus());
                 valid = true;
             } else {
                 System.out.println("Planting failed. Please try again!");
@@ -122,12 +122,12 @@ public class TextInterface {
     public void printStatusMenu() {
         System.out.println();
         System.out.println("===== STATUS MENU =====");
-        System.out.println("City Status: " + city.getStatus());
+        System.out.println("City Status: " + getCity().getStatus());
         System.out.println();
     }
 
     public void resetCity(String newcityname) {
-        this.city = new City(newcityname);
+        game.resetCity(newcityname);
     }
 
 }
