@@ -10,6 +10,7 @@ public class Codeopolis {
                 case 1:
                     //* start new game
                     boolean gamerunning = true;
+                    ti.resetCity("Town");
                     while (gamerunning) {
 
                         switch (ti.printGameMenu()) {
