@@ -16,7 +16,12 @@ public class TextInterface {
     public int promptInt(String text) {
         Scanner scanner = new Scanner(System.in);
         System.out.print(text);
-        return scanner.nextInt();
+        String input = scanner.next();
+        if(input.matches("[0-9]+")) {
+            return Integer.parseInt(input);
+        }else {
+            return promptInt(text);
+        }
     }
 
     public String promptString(String text) {

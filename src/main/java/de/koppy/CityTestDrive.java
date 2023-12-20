@@ -49,6 +49,11 @@ public class CityTestDrive {
         Assert(city.getPopulation() == resident, "correct people (noone died) acutal: " + city.getPopulation() + ", expected: " + resident);
         Assert(city.getAcres() == acres, "correct acres");
 
+        Game game = new Game("UwUCity");
+        Assert(game.getCity().getName().equals("UwUCity"), "correct name init game");
+        game.resetCity("NewTown");
+        Assert(game.getCity().getName().equals("NewTown"), "reset neue City");
+
     }
 
     public static void Assert(boolean bool, String description) {
