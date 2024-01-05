@@ -1,17 +1,13 @@
-package de.koppy;
+package de.koppy.presentation;
+
+import de.koppy.TurnResult;
+import de.koppy.domainmodel.City;
+import de.koppy.domainmodel.Game;
+import de.koppy.domainmodel.UserInterface;
 
 import java.util.Scanner;
 
-public class TextInterface {
-
-    private Game game;
-    public TextInterface(Game game) {
-        this.game = game;
-    }
-
-    public City getCity() {
-        return game.getCity();
-    }
+public class TextInterface implements UserInterface {
 
     public int promptInt(String text) {
         Scanner scanner = new Scanner(System.in);
@@ -50,89 +46,116 @@ public class TextInterface {
         return promptInt("Please select an Option: ");
     }
 
-    public void printBuyMenu() {
+    public void printStatusMenu(City city) {
+        System.out.println();
+        System.out.println("===== STATUS MENU =====");
+        System.out.println("City Status: " + city.getStatus());
+        System.out.println();
+    }
+
+    @Override
+    public int buy(int pricePerAcre, City city) {
         System.out.println();
         System.out.println("===== BUY MENU =====");
-        System.out.println("City status: " + getCity().getStatus());
-        System.out.println("Current price per acre: " + getCity().getPriceperacre());
+        System.out.println("City status: " + city.getStatus());
+        System.out.println("Current price per acre: " + city.getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres would you like to buy? ");
-            if (getCity().kaufen(input)) {
+            if (city.kaufen(input)) {
                 System.out.println("You bought " + input + " acres.");
-                System.out.println("New Status: " + getCity().getStatus());
+                System.out.println("New Status: " + city.getStatus());
                 valid = true;
             } else {
                 System.out.println("Buying failed. Please try again");
             }
         }
+        return 0;
     }
 
-    public void printSellMenu() {
+    @Override
+    public int sell(int pricePerAcre, City city) {
         System.out.println();
         System.out.println("===== SELL MENU =====");
-        System.out.println("City status: " + getCity().getStatus());
-        System.out.println("Current price per acre: " + getCity().getPriceperacre());
+        System.out.println("City status: " + city.getStatus());
+        System.out.println("Current price per acre: " + city.getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres would you like to sell? ");
-            if (getCity().verkaufen(input)) {
+            if (city.verkaufen(input)) {
                 System.out.println("You sold " + input + " acres.");
-                System.out.println("New Status: " + getCity().getStatus());
+                System.out.println("New Status: " + city.getStatus());
                 valid = true;
             } else {
                 System.out.println("Selling failed. Please try again!");
             }
         }
+        return 0;
     }
 
-    public void printFeedMenu() {
+    @Override
+    public int feed(int bushelsPerResident, City city) {
         System.out.println();
         System.out.println("===== FEED MENU =====");
-        System.out.println("City status: " + getCity().getStatus());
-        System.out.println("Current price per acre: " + getCity().getPriceperacre());
+        System.out.println("City status: " + city.getStatus());
+        System.out.println("Current price per acre: " + city.getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many bushles would you like to feed to your people? ");
-            if (getCity().ernähren(input)) {
-                System.out.println("New Status: " + getCity().getStatus());
+            if (city.ernähren(input)) {
+                System.out.println("New Status: " + city.getStatus());
                 valid = true;
             } else {
                 System.out.println("Feeding failed. Please try again!");
             }
         }
+        return 0;
     }
 
-    public void printPlantMenu() {
+    @Override
+    public int plant(int bushelsPerAcre, int acrePerResident, City city) {
         System.out.println();
         System.out.println("===== PLANT MENU =====");
-        System.out.println("City status: " + getCity().getStatus());
-        System.out.println("Current price per acre: " + getCity().getPriceperacre());
+        System.out.println("City status: " + city.getStatus());
+        System.out.println("Current price per acre: " + city.getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres of land do you wish to plant with seed? ");
-            if (getCity().pflanzen(input)) {
-                System.out.println("New Status: " + getCity().getStatus());
+            if (city.pflanzen(input)) {
+                System.out.println("New Status: " + city.getStatus());
                 valid = true;
             } else {
-                System.out.println("Planting failed. Please try again!");
+                illegalInput("Planting failed. Please try again!");
             }
         }
+        return 0;
     }
 
-    public void printStatusMenu() {
-        System.out.println();
-        System.out.println("===== STATUS MENU =====");
-        System.out.println("City Status: " + getCity().getStatus());
-        System.out.println();
+    @Override
+    public void turnEnd(TurnResult result) {
+        System.out.println("Result of the Turn: ");
+        System.out.println("This year bla, bla...");
+        //*TODO: add info about turn here
     }
 
-    public void resetCity(String newcityname) {
-        game.resetCity(newcityname);
+    @Override
+    public void illegalInput(String message) {
+        System.out.println(message);
     }
 
+    @Override
+    public void gameWon(String message) {
+        System.out.println("You Won!");
+        System.out.println(message);
+    }
+
+    @Override
+    public void gameLost(String message) {
+        System.out.println("You Lost! (Game Over)");
+        System.out.println(message);
+    }
 }
