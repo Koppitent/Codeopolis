@@ -5,7 +5,6 @@ import de.koppy.domainmodel.Game;
 
 public class Codeopolis {
     public static void main(String[] args) {
-        startTests();
         TextInterface ti = new TextInterface();
         Game game = new Game("Town", DifficultyLevel.EASY, ti);
         boolean apprunning = true;
@@ -69,11 +68,6 @@ public class Codeopolis {
 
 
 
-    }
-
-    public static void startTests() {
-        System.out.println("Program starting tests...!");
-        CityTestDrive.startTest();
     }
 
 }
