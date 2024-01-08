@@ -42,7 +42,6 @@ public class Harvest {
 
     @Override
     public String toString() {
-        //TODO
         return "Harvest" +
                 ", is in year " + this.year +
                 ", contains " + this.amount;
