@@ -42,7 +42,9 @@ public class TextInterface implements UserInterface {
         System.out.println("3. FEED");
         System.out.println("4. PLANT");
         System.out.println("5. SHOW STATUS");
-        System.out.println("6. QUIT GAME");
+        System.out.println("6. EXPAND");
+        System.out.println("7. QUIT GAME");
+        System.out.println("8. RUN TURN");
         return promptInt("Please select an Option: ");
     }
 
@@ -69,6 +71,26 @@ public class TextInterface implements UserInterface {
                 valid = true;
             } else {
                 System.out.println("Buying failed. Please try again");
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public int expand(City city) {
+        System.out.println();
+        System.out.println("===== EXPAND MENU =====");
+        System.out.println("City status: " + city.getStatus());
+        System.out.println();
+        boolean valid = false;
+        while(!valid) {
+            int input = promptInt("How many expansions would you like to buy? ");
+            if (city.expandDepot(input)) {
+                System.out.println("You expandet " + input + " in Depot.");
+                System.out.println("New Status: " + city.getStatus());
+                valid = true;
+            } else {
+                System.out.println("Expanding failed. Please try again!");
             }
         }
         return 0;

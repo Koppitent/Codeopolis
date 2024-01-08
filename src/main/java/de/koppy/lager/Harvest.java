@@ -15,9 +15,15 @@ public class Harvest {
      * if it fails: return -1
      */
     public int remove(int amount) {
-        if(amount > this.amount) return -1;
+        int removed = 0;
+        if(amount > this.amount) {
+            removed = this.amount;
+            this.amount = 0;
+            return removed;
+        }
+        removed = amount;
         this.amount = this.amount - amount;
-        return this.amount;
+        return removed;
     }
 
     public int decay() {

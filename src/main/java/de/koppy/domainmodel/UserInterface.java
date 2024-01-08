@@ -22,6 +22,9 @@ public interface UserInterface {
      * @param city         The current city.
      * @return The number of acres bought.
      */
+
+    int expand(City city);
+
     int buy(int pricePerAcre, City city);
 
     /**

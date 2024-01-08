@@ -15,6 +15,7 @@ public class Depot {
     public int getFillLevel() {
         int filllevel = 0;
         for (Harvest harvest : stock) {
+            if(harvest == null) continue;
             filllevel = filllevel + harvest.getAmount();
         }
         return filllevel;
@@ -26,7 +27,7 @@ public class Depot {
 
     public boolean store(Harvest harvest) {
         for(int i=0; i<stock.length; i++) {
-            if(stock[i] != null) {
+            if(stock[i] == null) {
                 stock[i] = harvest;
                 return true;
             }
@@ -36,23 +37,15 @@ public class Depot {
 
     /*
      * remove first possible
-     * return amount übrig (nicht takeout)
+     * return amount actually removed
      */
     public int takeOut(int amount) {
-        if(amount > getFillLevel()) return amount;
+        int amountbegin = amount;
         for(Harvest harvest : stock) {
-            if(harvest.getAmount() <= amount) {
-                //* Less or equal amount in Harvest than amount to remove
-                amount = amount - harvest.getAmount();
-                harvest.remove(harvest.getAmount());
-            }else {
-                //* More in Harvest than amount to remove
-                harvest.remove(amount);
-                amount = 0;
-                break;
-            }
+            amount = amount - harvest.remove(amount);
+            if(amount <= 0) return amountbegin;
         }
-        return amount;
+        return amountbegin-amount;
     }
 
     public void expand(int capacity) {
@@ -80,6 +73,7 @@ public class Depot {
     public int decay() {
         int totaldecay=0;
         for(Harvest harvest : stock) {
+            if(harvest == null) continue;
             totaldecay = totaldecay + harvest.decay();
         }
         return totaldecay;

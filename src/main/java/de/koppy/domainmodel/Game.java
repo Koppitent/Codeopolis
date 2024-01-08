@@ -2,6 +2,7 @@ package de.koppy.domainmodel;
 
 import de.koppy.DifficultyLevel;
 import de.koppy.GameConfig;
+import de.koppy.TurnResult;
 import de.koppy.presentation.TextInterface;
 
 public class Game {
@@ -29,8 +30,13 @@ public class Game {
         return this.config.getDifficultyLevel();
     }
 
+    public void nextTurn() {
+        TurnResult tr = city.runTurn();
+        ti.turnEnd(tr);
+    }
+
     public void applyConfig() {
-        this.city.setBushles(config.getInitialBushels());
+        this.city.setInitBushles(config.getInitialBushels());
         this.city.setAcres(config.getInitialAcres());
         this.city.setPopulation(config.getInitialResidents());
         this.city.setERNTEFAKTOR(config.getHarvestFactor());
@@ -41,6 +47,8 @@ public class Game {
         this.city.setR(config.getRateInfestation());
         this.city.setMaxyear(config.getNumberOfYears());
         this.city.setBUSHLES_PER_ACRE(config.getBushelsPerAcre());
+        this.city.setStartcapacity(config.getMaxcapacity());
+        this.city.reloadCity();
     }
 
     public City getCity() {

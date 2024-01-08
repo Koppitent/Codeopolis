@@ -1,6 +1,8 @@
 package de.koppy.domainmodel;
 
 import de.koppy.TurnResult;
+import de.koppy.lager.Depot;
+import de.koppy.lager.Harvest;
 
 import java.util.Random;
 
@@ -14,18 +16,30 @@ public class City {
     private int minPricePerAcre = 10;
     private int R = 25;
     final private String name;
-    private int bushles;
+    private Depot depot;
+    private int startcapacity = 3;
     private int acres;
     private int population;
     private int sizefarmland;
     private int year;
     private int priceperacre;
+    private int initBushles = 2800;
     private int bushlesfeedingthisyear;
     private int maxyear = 10;
 
     public City(String name) {
         this.name = name;
-        this.bushles = 2800;
+        this.depot = new Depot(startcapacity);
+        this.depot.store(new Harvest(initBushles, 0));
+        this.acres = 1000;
+        this.population = 100;
+        this.year = 0;
+        generateNewPriceperacre();
+    }
+
+    public void reloadCity() {
+        this.depot = new Depot(startcapacity);
+        this.depot.store(new Harvest(initBushles, 0));
         this.acres = 1000;
         this.population = 100;
         this.year = 0;
@@ -36,8 +50,8 @@ public class City {
 
         //* Get Info
         int residents = this.population;
-        int bushles = this.bushles;
         int year = this.year;
+        int newharvest = 0;
 
         int starved = calcPeopleStarved();
         residents = residents - starved;
@@ -46,17 +60,19 @@ public class City {
         int newresidents = calcNewResidents(starvedPercentage, residents); //* newresidents VOR oder NACH starved? (currently DANACH)
         residents = residents + newresidents;
 
-        int bushelsHarvested = calcErnte(bushles);
-        bushles = bushles + bushelsHarvested;
+        int bushelsHarvested = calcErnte(depot.getFillLevel());
+        newharvest = newharvest + bushelsHarvested;
 
-        int ateByRats = calcRats(bushles); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DANACH)
-        bushles = bushles - ateByRats;
+        int ateByRats = calcRats(depot.getFillLevel()); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DANACH)
+        depot.takeOut(ateByRats);
+
+        depot.decay();
 
         year++;
-        TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, bushles, starved, acres, ateByRats, starvedPercentage);
+        TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, depot.getFillLevel(), starved, acres, ateByRats, starvedPercentage);
 
         //* Set Result
-        this.bushles = tr.getBushels();
+        boolean enoughspace = this.depot.store(new Harvest(newharvest, 0));
         this.year = tr.getYear();
         this.population = tr.getResidents();
 
@@ -65,6 +81,12 @@ public class City {
         generateNewPriceperacre();
 
         return tr;
+    }
+
+    public boolean expandDepot(int capacity) {
+        if(depot.getFillLevel() <= 0) return false;
+        this.depot.expand(capacity);
+        return true;
     }
 
     private int calcRats(int currentbushles) {
@@ -106,9 +128,9 @@ public class City {
      *
      */
     public boolean kaufen(int amount) {
-        if(this.bushles < (amount * priceperacre)) return false;
+        if(depot.getFillLevel() < (amount * priceperacre)) return false;
         if(amount < 0) return false;
-        this.bushles = this.bushles - (amount * priceperacre);
+        depot.takeOut(amount * priceperacre);
         this.acres = this.acres + amount;
         return true;
     }
@@ -116,25 +138,26 @@ public class City {
     public boolean verkaufen(int amount) {
         if(this.acres < amount) return false;
         if(amount < 0) return false;
+        boolean canstore = depot.store(new Harvest(amount * priceperacre, 0));
+        if(!canstore) return false;
         this.acres = this.acres - amount;
-        this.bushles = this.bushles + (amount * priceperacre);
         return true;
     }
 
     public boolean ernähren(int bushlesfeeding) {
         if(bushlesfeeding < 0) return false;
-        if(bushlesfeeding > bushles) return false;
+        if(bushlesfeeding > depot.getFillLevel()) return false;
         this.bushlesfeedingthisyear = this.bushlesfeedingthisyear + bushlesfeeding;
-        this.bushles = this.bushles - bushlesfeeding;
+        depot.takeOut(bushlesfeeding);
         return true;
     }
 
     public boolean pflanzen(int acrestoplant) {
         if(acrestoplant < 0) return false;
-        if(acrestoplant > this.bushles*BUSHLES_PER_ACRE) return false;
+        if(acrestoplant > depot.getFillLevel()*BUSHLES_PER_ACRE) return false;
         if(acrestoplant > population/acreperresident) return false;
         this.sizefarmland = acrestoplant;
-        this.bushles = this.bushles - acrestoplant;
+        depot.takeOut(acrestoplant);
         return true;
     }
 
@@ -148,7 +171,7 @@ public class City {
     }
 
     public int getBushles() {
-        return bushles;
+        return depot.getFillLevel();
     }
 
     public int getPopulation() {
@@ -183,8 +206,16 @@ public class City {
         R = r;
     }
 
+    public void setStartcapacity(int startcapacity) {
+        this.startcapacity = startcapacity;
+    }
+
     public void setAcreperresident(int acreperresident) {
         this.acreperresident = acreperresident;
+    }
+
+    public void setInitBushles(int initBushles) {
+        this.initBushles = initBushles;
     }
 
     public void setSizefarmland(int sizefarmland) {
@@ -209,13 +240,9 @@ public class City {
         this.maxyear = maxyear;
     }
 
-    public void setBushles(int bushles) {
-        this.bushles = bushles;
-    }
-
     @Override
     public String toString() {
-        return "After " + year + " years, the town '" + name + "' inhabits " + population + " people, owns " + acres + " acre, " + bushles + " bushles and plants " + sizefarmland + "farmlands.";
+        return "After " + year + " years, the town '" + name + "' inhabits " + population + " people, owns " + acres + " acre, " + depot.getFillLevel() + " bushles and plants " + sizefarmland + "farmlands.";
     }
 
     public void setPriceperacre(int priceperacre) {
@@ -235,7 +262,7 @@ public class City {
     }
 
     public String getStatus() {
-        return acres + " acres of land, " + bushles + " bushles of grain, " + population + " residents.";
+        return acres + " acres of land, " + depot.getFillLevel() + " bushles of grain, " + population + " residents.";
     }
 
 }

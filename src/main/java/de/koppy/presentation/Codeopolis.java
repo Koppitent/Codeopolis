@@ -40,9 +40,17 @@ public class Codeopolis {
                                 ti.printStatusMenu(game.getCity());
                                 break;
                             case 6:
+                                //* Show Status
+                                game.getTextInterface().expand(game.getCity());
+                                break;
+                            case 7:
                                 //* Quit game
                                 System.out.println("Quitting game...");
                                 gamerunning = false;
+                                break;
+                            case 8:
+                                //* Next Turn
+                                game.nextTurn();
                                 break;
                             default:
                                 System.out.println("Invalid Input. Please try again.");
