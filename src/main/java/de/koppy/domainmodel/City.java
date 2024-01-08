@@ -1,12 +1,18 @@
-package de.koppy;
+package de.koppy.domainmodel;
+
+import de.koppy.TurnResult;
 
 import java.util.Random;
 
 public class City {
 
-    private static final int BUSHLES_PER_PERSON = 20;
-    private static final int ERNTEFAKTOR = 6;
-    private static final int R = 25;
+    private int BUSHLES_PER_PERSON = 20;
+    private int BUSHLES_PER_ACRE = 1;
+    private float ERNTEFAKTOR = 6;
+    private int acreperresident=1;
+    private int maxPricePerAcre = 30;
+    private int minPricePerAcre = 10;
+    private int R = 25;
     final private String name;
     private int bushles;
     private int acres;
@@ -15,6 +21,7 @@ public class City {
     private int year;
     private int priceperacre;
     private int bushlesfeedingthisyear;
+    private int maxyear = 10;
 
     public City(String name) {
         this.name = name;
@@ -124,8 +131,8 @@ public class City {
 
     public boolean pflanzen(int acrestoplant) {
         if(acrestoplant < 0) return false;
-        if(acrestoplant > this.bushles) return false;
-        if(acrestoplant > population/10) return false;
+        if(acrestoplant > this.bushles*BUSHLES_PER_ACRE) return false;
+        if(acrestoplant > population/acreperresident) return false;
         this.sizefarmland = acrestoplant;
         this.bushles = this.bushles - acrestoplant;
         return true;
@@ -152,6 +159,42 @@ public class City {
         return year;
     }
 
+    public void setAcres(int acres) {
+        this.acres = acres;
+    }
+
+    public void setPopulation(int population) {
+        this.population = population;
+    }
+
+    public void setBUSHLES_PER_ACRE(int BUSHLES_PER_ACRE) {
+        this.BUSHLES_PER_ACRE = BUSHLES_PER_ACRE;
+    }
+
+    public void setBUSHLES_PER_PERSON(int BUSHLES_PER_PERSON) {
+        this.BUSHLES_PER_PERSON = BUSHLES_PER_PERSON;
+    }
+
+    public void setERNTEFAKTOR(float ERNTEFAKTOR) {
+        this.ERNTEFAKTOR = ERNTEFAKTOR;
+    }
+
+    public void setR(int r) {
+        R = r;
+    }
+
+    public void setAcreperresident(int acreperresident) {
+        this.acreperresident = acreperresident;
+    }
+
+    public void setSizefarmland(int sizefarmland) {
+        this.sizefarmland = sizefarmland;
+    }
+
+    public void setBushlesfeedingthisyear(int bushlesfeedingthisyear) {
+        this.bushlesfeedingthisyear = bushlesfeedingthisyear;
+    }
+
     public void setYear(int year) {
         if(year <= this.year) return;
         this.year = year;
@@ -159,7 +202,11 @@ public class City {
 
     private void generateNewPriceperacre() {
         Random rndm = new Random();
-        this.priceperacre = rndm.nextInt(50);
+        this.priceperacre = minPricePerAcre + rndm.nextInt(maxPricePerAcre-minPricePerAcre);
+    }
+
+    public void setMaxyear(int maxyear) {
+        this.maxyear = maxyear;
     }
 
     public void setBushles(int bushles) {
@@ -173,6 +220,14 @@ public class City {
 
     public void setPriceperacre(int priceperacre) {
         this.priceperacre = priceperacre;
+    }
+
+    public void setMaxPricePerAcre(int maxPricePerAcre) {
+        this.maxPricePerAcre = maxPricePerAcre;
+    }
+
+    public void setMinPricePerAcre(int minPricePerAcre) {
+        this.minPricePerAcre = minPricePerAcre;
     }
 
     public int getPriceperacre() {

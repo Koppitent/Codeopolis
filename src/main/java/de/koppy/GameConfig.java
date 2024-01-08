@@ -2,77 +2,82 @@ package de.koppy;
 
 public class GameConfig {
 
-    private int initResidents;
+    private DifficultyLevel difficultyLevel;
+    private int initialResidents;
     private int initialAcres;
-    private int initialBushles;
+    private int initialBushels;
     private int maxAcrePrice;
-    private int minAcrePrice;
-    private int bushlesPerResident;
-    private int bushlesPerAcre;
+    private int minArcePrice;
+    private int bushelsPerResident;
+    private int bushelsPerAcre;
     private int acrePerResident;
     private int numberOfYears;
     private float harvestFactor;
     private int rateInfestation;
-    private DifficultyLevel difficultyLevel;
 
     public GameConfig(DifficultyLevel difficultyLevel) {
         this.difficultyLevel = difficultyLevel;
-        this.initResidents = 100;
-        this.initialBushles = 2800;
-        this.maxAcrePrice = 35;
-        this.minAcrePrice = 15;
-        this.bushlesPerAcre = 1;
-        this.harvestFactor = 10;
+        this.initialResidents = 100;
+        this.initialAcres = 1000;
+        this.initialBushels = 2800;
+        this.maxAcrePrice = 30;
+        this.minArcePrice = 10;
+        this.bushelsPerResident = 20;
+        this.bushelsPerAcre = 1;
+        this.acrePerResident = 10;
         this.numberOfYears = 10;
+        this.harvestFactor = 6.f;
+        this.rateInfestation = 10;
         switch (difficultyLevel) {
-            case EASY:
-                this.harvestFactor = 6.0f;
-                this.initialAcres = 1000;
-                this.maxAcrePrice = 30;
-                this.minAcrePrice = 10;
-                this.bushlesPerResident = 20;
-                break;
             case MEDIUM:
-                this.harvestFactor = 5.0f;
                 this.initialAcres = 900;
-                this.bushlesPerResident = 22;
+                this.maxAcrePrice = 35;
+                this.minArcePrice = 15;
+                this.bushelsPerResident = 22;
+                this.harvestFactor = 5.f;
+                this.rateInfestation = 20;
                 break;
             case HARD:
-                this.harvestFactor = 4.0f;
                 this.initialAcres = 800;
-                this.bushlesPerResident = 24;
+                this.maxAcrePrice = 35;
+                this.minArcePrice = 15;
+                this.bushelsPerResident = 24;
+                this.harvestFactor = 4.f;
+                this.rateInfestation = 25;
                 break;
-            default:
-            break;
         }
     }
 
-    public int getInitResidents() {
-        return initResidents;
+    public DifficultyLevel getDifficultyLevel() {
+        return difficultyLevel;
+    }
+
+    public int getInitialResidents() {
+        return initialResidents;
     }
 
     public int getInitialAcres() {
         return initialAcres;
     }
 
-    public int getInitianBushles() {
-        return initianBushles;
+    public int getInitialBushels() {
+        return initialBushels;
     }
 
     public int getMaxAcrePrice() {
         return maxAcrePrice;
     }
 
-    public int getMinAcrePrice() {
-        return minAcrePrice;
+    public int getMinArcePrice() {
+        return minArcePrice;
     }
 
-    public int getBushlesPerResident() {
-        return bushlesPerResident;
+    public int getBushelsPerResident() {
+        return bushelsPerResident;
     }
 
-    public int getBushlesPerAcre() {
-        return bushlesPerAcre;
+    public int getBushelsPerAcre() {
+        return bushelsPerAcre;
     }
 
     public int getAcrePerResident() {
@@ -89,9 +94,5 @@ public class GameConfig {
 
     public int getRateInfestation() {
         return rateInfestation;
-    }
-
-    public DifficultyLevel getDifficultyLevel() {
-        return difficultyLevel;
     }
 }

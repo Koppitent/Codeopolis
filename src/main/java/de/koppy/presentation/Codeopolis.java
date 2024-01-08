@@ -1,38 +1,43 @@
-package de.koppy;
+package de.koppy.presentation;
+
+import de.koppy.CityTestDrive;
+import de.koppy.DifficultyLevel;
+import de.koppy.domainmodel.Game;
+import de.koppy.presentation.TextInterface;
 
 public class Codeopolis {
     public static void main(String[] args) {
         startTests();
-        TextInterface ti = new TextInterface(new Game("Town"));
+        TextInterface ti = new TextInterface();
+        Game game = new Game("Town", DifficultyLevel.EASY, ti);
         boolean apprunning = true;
         while (apprunning) {
             switch (ti.printMainMenu()) {
                 case 1:
                     //* start new game
                     boolean gamerunning = true;
-                    ti.resetCity("Town");
+                    game.resetCity("Town");
                     while (gamerunning) {
-
                         switch (ti.printGameMenu()) {
                             case 1:
                                 //* Buying land
-                                ti.printBuyMenu();
+                                game.getTextInterface().buy(game.getCity().getPriceperacre(), game.getCity());
                                 break;
                             case 2:
                                 //* Selling land
-                                ti.printSellMenu();
+                                game.getTextInterface().sell(game.getCity().getPriceperacre(), game.getCity());
                                 break;
                             case 3:
                                 //* Feeding people
-                                ti.printFeedMenu();
+                                game.getTextInterface().feed(game.getConfig().getBushelsPerResident(), game.getCity());
                                 break;
                             case 4:
                                 //* Planting seeds
-                                ti.printPlantMenu();
+                                game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity());
                                 break;
                             case 5:
                                 //* Show Status
-                                ti.printStatusMenu();
+                                ti.printStatusMenu(game.getCity());
                                 break;
                             case 6:
                                 //* Quit game

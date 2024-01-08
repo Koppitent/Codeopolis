@@ -1,5 +1,9 @@
 package de.koppy;
 
+import de.koppy.domainmodel.City;
+import de.koppy.domainmodel.Game;
+import de.koppy.presentation.TextInterface;
+
 public class CityTestDrive {
 
     public static void startTest() {
@@ -49,7 +53,7 @@ public class CityTestDrive {
         Assert(city.getPopulation() == resident, "correct people (noone died) acutal: " + city.getPopulation() + ", expected: " + resident);
         Assert(city.getAcres() == acres, "correct acres");
 
-        Game game = new Game("UwUCity");
+        Game game = new Game("UwUCity", DifficultyLevel.EASY, new TextInterface());
         Assert(game.getCity().getName().equals("UwUCity"), "correct name init game");
         game.resetCity("NewTown");
         Assert(game.getCity().getName().equals("NewTown"), "reset neue City");
