@@ -70,6 +70,10 @@ public class Depot {
         this.EXPAND_COST_PERCENT = EXPAND_COST_PERCENT;
     }
 
+    public void setMAX_CAPACITY(int MAX_CAPACITY) {
+        this.MAX_CAPACITY = MAX_CAPACITY;
+    }
+
     public int decay() {
         int totaldecay=0;
         for(Harvest harvest : stock) {

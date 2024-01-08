@@ -1,9 +1,7 @@
 package de.koppy.presentation;
 
-import de.koppy.CityTestDrive;
-import de.koppy.DifficultyLevel;
+import de.koppy.domainmodel.DifficultyLevel;
 import de.koppy.domainmodel.Game;
-import de.koppy.presentation.TextInterface;
 
 public class Codeopolis {
     public static void main(String[] args) {

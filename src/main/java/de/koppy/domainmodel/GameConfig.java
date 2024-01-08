@@ -1,4 +1,4 @@
-package de.koppy;
+package de.koppy.domainmodel;
 
 public class GameConfig {
 
@@ -12,7 +12,7 @@ public class GameConfig {
     private int bushelsPerAcre;
     private int acrePerResident;
     private int numberOfYears;
-    private int maxcapacity;
+    private int initmaxlager;
     private float percentexpandcost;
     private float harvestFactor;
     private int rateInfestation;
@@ -31,7 +31,7 @@ public class GameConfig {
         this.harvestFactor = 6.f;
         this.rateInfestation = 10;
         this.percentexpandcost = 0.05f;
-        this.maxcapacity = 3;
+        this.initmaxlager = 3;
         switch (difficultyLevel) {
             case MEDIUM:
                 this.initialAcres = 900;
@@ -52,8 +52,8 @@ public class GameConfig {
         }
     }
 
-    public int getMaxcapacity() {
-        return maxcapacity;
+    public int getInitmaxlager() {
+        return initmaxlager;
     }
 
     public float getPercentexpandcost() {

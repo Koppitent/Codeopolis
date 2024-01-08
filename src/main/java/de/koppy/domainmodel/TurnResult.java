@@ -1,4 +1,4 @@
-package de.koppy;
+package de.koppy.domainmodel;
 
 import java.util.Objects;
 
@@ -18,6 +18,7 @@ public class TurnResult {
     private int starved; // Number of residents who starved during the turn
     private int starvedPercentage; // Percentage of residents starved during the turn
     private int year; // The year of the city
+    private int bushlesdecayed; // The bushles that decayed in the Depot
 
     /**
      * Constructs a `TurnResult` object with the specified values for each
@@ -35,7 +36,7 @@ public class TurnResult {
      * @param starvedPercentage Percentage of starved residents
      */
     public TurnResult(String name, int year, int newResidents, int bushelsHarvested, int residents,
-                      int bushels, int starved, int acres, int ateByRates, int starvedPercentage) {
+                      int bushels, int starved, int acres, int ateByRates, int starvedPercentage, int bushlesdecayed) {
         this.name = name;
         this.year = year;
         this.newResidents = newResidents;
@@ -46,6 +47,7 @@ public class TurnResult {
         this.acres = acres;
         this.ateByRats = ateByRates;
         this.starvedPercentage = starvedPercentage;
+        this.bushlesdecayed = bushlesdecayed;
     }
 
     @Override
@@ -61,6 +63,7 @@ public class TurnResult {
                 && bushelsHarvested == that.bushelsHarvested && residents == that.residents
                 && bushels == that.bushels && starved == that.starved && acres == that.acres
                 && ateByRats == that.ateByRats && starvedPercentage == that.starvedPercentage
+                && bushlesdecayed == that.bushlesdecayed
                 && Objects.equals(name, that.name);
     }
 
@@ -89,6 +92,15 @@ public class TurnResult {
      */
     public int getBushels() {
         return bushels;
+    }
+
+    /**
+     * Returns the bushles decayed in the year.
+     *
+     * @return The number of bushels that decayed
+     */
+    public int getBushlesdecayed() {
+        return bushlesdecayed;
     }
 
     /**

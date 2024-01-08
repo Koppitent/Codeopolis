@@ -1,6 +1,5 @@
 package de.koppy.domainmodel;
 
-import de.koppy.TurnResult;
 import de.koppy.lager.Depot;
 import de.koppy.lager.Harvest;
 
@@ -26,6 +25,7 @@ public class City {
     private int initBushles = 2800;
     private int bushlesfeedingthisyear;
     private int maxyear = 10;
+    private Harvest harvestThisYear; //* set everything in here and put into depot at the end of the Turn just an IDEA
 
     public City(String name) {
         this.name = name;
@@ -37,13 +37,16 @@ public class City {
         generateNewPriceperacre();
     }
 
-    public void reloadCity() {
+    public void reloadCity(float EXPAND_COST_PERCENT, int MAX_CAPACITY) {
         this.depot = new Depot(startcapacity);
         this.depot.store(new Harvest(initBushles, 0));
         this.acres = 1000;
         this.population = 100;
         this.year = 0;
         generateNewPriceperacre();
+
+        this.depot.setEXPAND_COST_PERCENT(EXPAND_COST_PERCENT);
+        this.depot.setMAX_CAPACITY(MAX_CAPACITY);
     }
 
     public TurnResult runTurn() { //* so gemeint als 'geben sie als Instanz der Klasse zurück'?
@@ -66,10 +69,10 @@ public class City {
         int ateByRats = calcRats(depot.getFillLevel()); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DANACH)
         depot.takeOut(ateByRats);
 
-        depot.decay();
+        int decayed = depot.decay();
 
         year++;
-        TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, depot.getFillLevel(), starved, acres, ateByRats, starvedPercentage);
+        TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, depot.getFillLevel(), starved, acres, ateByRats, starvedPercentage, decayed);
 
         //* Set Result
         boolean enoughspace = this.depot.store(new Harvest(newharvest, 0));

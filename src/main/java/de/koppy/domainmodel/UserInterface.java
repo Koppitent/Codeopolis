@@ -1,7 +1,5 @@
 package de.koppy.domainmodel;
 
-import de.koppy.TurnResult;
-
 /**
  * The UserInterface interface represents the interface for interactions between
  * the game logic and the user interface.

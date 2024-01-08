@@ -1,8 +1,5 @@
 package de.koppy.domainmodel;
 
-import de.koppy.DifficultyLevel;
-import de.koppy.GameConfig;
-import de.koppy.TurnResult;
 import de.koppy.presentation.TextInterface;
 
 public class Game {
@@ -47,8 +44,8 @@ public class Game {
         this.city.setR(config.getRateInfestation());
         this.city.setMaxyear(config.getNumberOfYears());
         this.city.setBUSHLES_PER_ACRE(config.getBushelsPerAcre());
-        this.city.setStartcapacity(config.getMaxcapacity());
-        this.city.reloadCity();
+        this.city.setStartcapacity(config.getInitmaxlager());
+        this.city.reloadCity(config.getPercentexpandcost(), config.getInitmaxlager());
     }
 
     public City getCity() {

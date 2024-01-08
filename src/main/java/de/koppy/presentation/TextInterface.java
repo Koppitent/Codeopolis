@@ -1,8 +1,7 @@
 package de.koppy.presentation;
 
-import de.koppy.TurnResult;
+import de.koppy.domainmodel.TurnResult;
 import de.koppy.domainmodel.City;
-import de.koppy.domainmodel.Game;
 import de.koppy.domainmodel.UserInterface;
 
 import java.util.Scanner;
@@ -161,6 +160,10 @@ public class TextInterface implements UserInterface {
     public void turnEnd(TurnResult result) {
         System.out.println("Result of the Turn: ");
         System.out.println("This year bla, bla...");
+
+        System.out.println("Your progress to Year " + result.getYear());
+        System.out.println("Your City does have " + result.getBushels() + " bushles now.");
+        System.out.println(result.getBushlesdecayed() + " bushles decayed");
         //*TODO: add info about turn here
     }
 
