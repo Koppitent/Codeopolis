@@ -1,7 +1,7 @@
 package de.koppy.presentation;
 
+import de.koppy.domainmodel.CityState;
 import de.koppy.domainmodel.TurnResult;
-import de.koppy.domainmodel.City;
 import de.koppy.domainmodel.UserInterface;
 
 import java.util.Scanner;
@@ -47,7 +47,7 @@ public class TextInterface implements UserInterface {
         return promptInt("Please select an Option: ");
     }
 
-    public void printStatusMenu(City city) {
+    public void printStatusMenu(CityState city) {
         System.out.println();
         System.out.println("===== STATUS MENU =====");
         System.out.println("City Status: " + city.getStatus());
@@ -55,7 +55,7 @@ public class TextInterface implements UserInterface {
     }
 
     @Override
-    public int buy(int pricePerAcre, City city) {
+    public int buy(int pricePerAcre, CityState city) {
         System.out.println();
         System.out.println("===== BUY MENU =====");
         System.out.println("City status: " + city.getStatus());
@@ -76,7 +76,7 @@ public class TextInterface implements UserInterface {
     }
 
     @Override
-    public int expand(City city) {
+    public int expand(CityState city) {
         System.out.println();
         System.out.println("===== EXPAND MENU =====");
         System.out.println("City status: " + city.getStatus());
@@ -96,7 +96,7 @@ public class TextInterface implements UserInterface {
     }
 
     @Override
-    public int sell(int pricePerAcre, City city) {
+    public int sell(int pricePerAcre, CityState city) {
         System.out.println();
         System.out.println("===== SELL MENU =====");
         System.out.println("City status: " + city.getStatus());
@@ -117,7 +117,7 @@ public class TextInterface implements UserInterface {
     }
 
     @Override
-    public int feed(int bushelsPerResident, City city) {
+    public int feed(int bushelsPerResident, CityState city) {
         System.out.println();
         System.out.println("===== FEED MENU =====");
         System.out.println("City status: " + city.getStatus());
@@ -137,7 +137,7 @@ public class TextInterface implements UserInterface {
     }
 
     @Override
-    public int plant(int bushelsPerAcre, int acrePerResident, City city) {
+    public int plant(int bushelsPerAcre, int acrePerResident, CityState city) {
         System.out.println();
         System.out.println("===== PLANT MENU =====");
         System.out.println("City status: " + city.getStatus());

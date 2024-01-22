@@ -17,41 +17,41 @@ public interface UserInterface {
      * Allows the user to buy acres of land.
      *
      * @param pricePerAcre The price per acre of land.
-     * @param city         The current city.
+     * @param cityState         The current cityState.
      * @return The number of acres bought.
      */
 
-    int expand(City city);
+    int buy(int pricePerAcre, CityState cityState);
 
-    int buy(int pricePerAcre, City city);
+    int expand(CityState city);
 
     /**
      * Allows the user to sell acres of land.
      *
      * @param pricePerAcre The price per acre of land.
-     * @param city         The current city.
+     * @param cityState         The current cityState.
      * @return The number of acres sold.
      */
-    int sell(int pricePerAcre, City city);
+    int sell(int pricePerAcre, CityState cityState);
 
     /**
-     * Allows the user to feed the city's residents.
+     * Allows the user to feed the cityState's residents.
      *
      * @param bushelsPerResident The amount of bushels required per resident.
-     * @param city               The current city.
+     * @param cityState               The current cityState.
      * @return The number of residents fed.
      */
-    int feed(int bushelsPerResident, City city);
+    int feed(int bushelsPerResident, CityState cityState);
 
     /**
      * Allows the user to plant crops on acres of land.
      *
      * @param bushelsPerAcre  The amount of bushels required per acre of land.
      * @param acrePerResident The number of acres required per resident.
-     * @param city            The current city.
+     * @param cityState            The current cityState.
      * @return The number of acres planted.
      */
-    int plant(int bushelsPerAcre, int acrePerResident, City city);
+    int plant(int bushelsPerAcre, int acrePerResident, CityState cityState);
 
     /**
      * Handles the end of a turn.

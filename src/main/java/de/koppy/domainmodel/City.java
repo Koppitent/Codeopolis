@@ -5,7 +5,7 @@ import de.koppy.lager.Harvest;
 
 import java.util.Random;
 
-public class City {
+public class City implements CityState{
 
     private int BUSHLES_PER_PERSON = 20;
     private int BUSHLES_PER_ACRE = 1;
@@ -232,6 +232,10 @@ public class City {
     public void setYear(int year) {
         if(year <= this.year) return;
         this.year = year;
+    }
+
+    public int getSizefarmland() {
+        return sizefarmland;
     }
 
     private void generateNewPriceperacre() {

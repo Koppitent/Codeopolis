@@ -1,5 +1,7 @@
 package de.koppy.lager;
 
+import java.util.Random;
+
 public class Harvest {
     private int amount;
     private int year;
