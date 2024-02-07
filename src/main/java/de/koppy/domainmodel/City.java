@@ -26,12 +26,12 @@ public class City implements CityState{
     private int initBushles = 2800;
     private int bushlesfeedingthisyear;
     private int maxyear = 10;
-    private Weizen weizen;
-    private Gerste gerste;
-    private Hirse hirse;
-    private Mais mais;
-    private Reis reis;
-    private Roggen roggen;
+    private Weizen weizen = new Weizen();
+    private Gerste gerste = new Gerste();
+    private Hirse hirse = new Hirse();
+    private Mais mais = new Mais();
+    private Reis reis = new Reis();
+    private Roggen roggen = new Roggen();
     private Harvest harvestThisYear; //* set everything in here and put into depot at the end of the Turn just an IDEA
 
     public City(String name) {
