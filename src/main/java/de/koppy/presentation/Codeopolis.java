@@ -2,6 +2,7 @@ package de.koppy.presentation;
 
 import de.koppy.domainmodel.DifficultyLevel;
 import de.koppy.domainmodel.Game;
+import de.koppy.domainmodel.Plants.GetreideSorten;
 
 public class Codeopolis {
     public static void main(String[] args) {
@@ -30,7 +31,35 @@ public class Codeopolis {
                                 break;
                             case 4:
                                 //* Planting seeds
-                                game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity());
+                                boolean inPlantMenu = true;
+                                while(inPlantMenu) {
+                                    switch (game.getTextInterface().printPlantMenu()) {
+                                        case 0:
+                                            inPlantMenu = false;
+                                            break;
+                                        case 1:
+                                            game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity(), GetreideSorten.MAIS);
+                                            break;
+                                        case 2:
+                                            game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity(), GetreideSorten.WEIZEN);
+                                            break;
+                                        case 3:
+                                            game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity(), GetreideSorten.GERSTE);
+                                            break;
+                                        case 4:
+                                            game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity(), GetreideSorten.HIRSE);
+                                            break;
+                                        case 5:
+                                            game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity(), GetreideSorten.REIS);
+                                            break;
+                                        case 6:
+                                            game.getTextInterface().plant(game.getConfig().getBushelsPerAcre(), game.getConfig().getAcrePerResident(), game.getCity(), GetreideSorten.ROGGEN);
+                                            break;
+                                        default:
+                                            System.out.println("Invalid Input. Please try again.");
+                                            break;
+                                    }
+                                }
                                 break;
                             case 5:
                                 //* Show Status

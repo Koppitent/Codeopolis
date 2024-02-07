@@ -63,6 +63,7 @@ public abstract class Getreide {
     public int harvest() {
         int amount = amountToHarvest;
         this.amountplanted = 0;
+        this.amountToHarvest = 0;
         return amount;
     }
 

@@ -1,5 +1,7 @@
 package de.koppy.domainmodel;
 
+import de.koppy.domainmodel.Plants.GetreideSorten;
+
 /**
  * The UserInterface interface represents the interface for interactions between
  * the game logic and the user interface.
@@ -51,7 +53,7 @@ public interface UserInterface {
      * @param cityState            The current cityState.
      * @return The number of acres planted.
      */
-    int plant(int bushelsPerAcre, int acrePerResident, CityState cityState);
+    int plant(int bushelsPerAcre, int acrePerResident, CityState cityState, GetreideSorten sorten);
 
     /**
      * Handles the end of a turn.

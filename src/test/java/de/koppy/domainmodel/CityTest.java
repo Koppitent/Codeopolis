@@ -1,5 +1,6 @@
 package de.koppy.domainmodel;
 
+import de.koppy.domainmodel.Plants.GetreideSorten;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,7 +41,7 @@ class CityTest {
 
     @Test
     public void pflanzenTest() {
-        assertTrue(city.pflanzen(0));
+        assertTrue(city.pflanzen(0, GetreideSorten.REIS));
     }
     @Test
     public void yearTest() {
@@ -56,7 +57,7 @@ class CityTest {
         int acres = city.getAcres();
         city.kaufen(10);
         city.verkaufen(10);
-        city.pflanzen(20);
+        city.pflanzen(20, GetreideSorten.MAIS);
         city.ernähren(100*20);
         TurnResult tr = city.runTurn();
         bushles = bushles - tr.getAteByRates();

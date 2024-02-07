@@ -6,9 +6,8 @@ public class Harvest {
     private int amount;
     private int year;
 
-    public Harvest(int amount, int year) {
+    public Harvest(int amount) {
         this.amount = amount;
-        this.year = year;
     }
 
     /*

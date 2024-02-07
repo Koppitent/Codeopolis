@@ -1,5 +1,6 @@
 package de.koppy.domainmodel;
 
+import de.koppy.domainmodel.Plants.*;
 import de.koppy.lager.Depot;
 import de.koppy.lager.Harvest;
 
@@ -25,12 +26,18 @@ public class City implements CityState{
     private int initBushles = 2800;
     private int bushlesfeedingthisyear;
     private int maxyear = 10;
+    private Weizen weizen;
+    private Gerste gerste;
+    private Hirse hirse;
+    private Mais mais;
+    private Reis reis;
+    private Roggen roggen;
     private Harvest harvestThisYear; //* set everything in here and put into depot at the end of the Turn just an IDEA
 
     public City(String name) {
         this.name = name;
         this.depot = new Depot(startcapacity);
-        this.depot.store(new Harvest(initBushles, 0));
+        this.depot.store(new Harvest(initBushles));
         this.acres = 1000;
         this.population = 100;
         this.year = 0;
@@ -39,7 +46,7 @@ public class City implements CityState{
 
     public void reloadCity(float EXPAND_COST_PERCENT, int MAX_CAPACITY) {
         this.depot = new Depot(startcapacity);
-        this.depot.store(new Harvest(initBushles, 0));
+        this.depot.store(new Harvest(initBushles));
         this.acres = 1000;
         this.population = 100;
         this.year = 0;
@@ -55,17 +62,57 @@ public class City implements CityState{
         int residents = this.population;
         int year = this.year;
         int newharvest = 0;
+        Conditions c = Conditions.generateRandomConitions();
 
         int starved = calcPeopleStarved();
         residents = residents - starved;
 
+        //* starving stuff
         int starvedPercentage = ((int) ((((double) starved) / ((double) residents)) * 100D));
         int newresidents = calcNewResidents(starvedPercentage, residents); //* newresidents VOR oder NACH starved? (currently DANACH)
         residents = residents + newresidents;
 
-        int bushelsHarvested = calcErnte(depot.getFillLevel());
+        //* Harvest stuff
+        int bushelsHarvested = 0;
+        weizen.grow(c);
+        weizen.drought(c);
+        weizen.diseaseOutbreak(c);
+        weizen.pestInfestation(c);
+        bushelsHarvested = bushelsHarvested + weizen.harvest();
+
+        gerste.grow(c);
+        gerste.drought(c);
+        gerste.diseaseOutbreak(c);
+        gerste.pestInfestation(c);
+        bushelsHarvested = bushelsHarvested + gerste.harvest();
+
+        hirse.grow(c);
+        hirse.drought(c);
+        hirse.diseaseOutbreak(c);
+        hirse.pestInfestation(c);
+        bushelsHarvested = bushelsHarvested + hirse.harvest();
+
+        mais.grow(c);
+        mais.drought(c);
+        mais.diseaseOutbreak(c);
+        mais.pestInfestation(c);
+        bushelsHarvested = bushelsHarvested + mais.harvest();
+
+        roggen.grow(c);
+        roggen.drought(c);
+        roggen.diseaseOutbreak(c);
+        roggen.pestInfestation(c);
+        bushelsHarvested = bushelsHarvested + roggen.harvest();
+
+        reis.grow(c);
+        reis.drought(c);
+        reis.diseaseOutbreak(c);
+        reis.pestInfestation(c);
+        bushelsHarvested = bushelsHarvested + reis.harvest();
+
         newharvest = newharvest + bushelsHarvested;
 
+        //* Depot stuff
         int ateByRats = calcRats(depot.getFillLevel()); //* Rats mit wert bushles VOR oder NACH Ernte? (currently DANACH)
         depot.takeOut(ateByRats);
 
@@ -75,7 +122,7 @@ public class City implements CityState{
         TurnResult tr = new TurnResult(name, year, newresidents, bushelsHarvested, residents, depot.getFillLevel(), starved, acres, ateByRats, starvedPercentage, decayed);
 
         //* Set Result
-        boolean enoughspace = this.depot.store(new Harvest(newharvest, 0));
+        boolean enoughspace = this.depot.store(new Harvest(newharvest));
         this.year = tr.getYear();
         this.population = tr.getResidents();
 
@@ -96,15 +143,6 @@ public class City implements CityState{
         int percentate = new Random().nextInt(R+1);
         int ateByRats = (int) ((float) currentbushles * ((float) percentate / 100F)); //* schneide rest weg?
         return ateByRats;
-    }
-
-    private int calcErnte(int currentbushles) {
-        Random rndm = new Random();
-        float z = ((float) (rndm.nextInt(90)+11) / 100F);
-        float ernterate = (float) z * ERNTEFAKTOR;
-        int erntemenge = (int) (ernterate * (float) sizefarmland);
-        if(erntemenge > (Integer.MAX_VALUE-currentbushles)) return (Integer.MAX_VALUE-currentbushles);
-        return erntemenge; //* schneide rest weg?
     }
 
     private int calcNewResidents(int starvedPercentage, int residents) {
@@ -139,9 +177,10 @@ public class City implements CityState{
     }
 
     public boolean verkaufen(int amount) {
+        if(sizefarmland > acres-amount) return false;
         if(this.acres < amount) return false;
         if(amount < 0) return false;
-        boolean canstore = depot.store(new Harvest(amount * priceperacre, 0));
+        boolean canstore = depot.store(new Harvest(amount * priceperacre));
         if(!canstore) return false;
         this.acres = this.acres - amount;
         return true;
@@ -155,12 +194,39 @@ public class City implements CityState{
         return true;
     }
 
-    public boolean pflanzen(int acrestoplant) {
-        if(acrestoplant < 0) return false;
+    public boolean pflanzen(int acrestoplant, GetreideSorten getreidesorte) {
+        if(sizefarmland+acrestoplant > acres) return false;
         if(acrestoplant > depot.getFillLevel()*BUSHLES_PER_ACRE) return false;
-        if(acrestoplant > population/acreperresident) return false;
-        this.sizefarmland = acrestoplant;
-        depot.takeOut(acrestoplant);
+        if(sizefarmland+acrestoplant > population/acreperresident) return false;
+
+        switch (getreidesorte) {
+            case WEIZEN:
+                weizen.plant(acrestoplant);
+                depot.takeOut(acrestoplant);
+                break;
+            case MAIS:
+                mais.plant(acrestoplant);
+                depot.takeOut(acrestoplant);
+                break;
+            case HIRSE:
+                hirse.plant(acrestoplant);
+                depot.takeOut(acrestoplant);
+                break;
+            case REIS:
+                reis.plant(acrestoplant);
+                depot.takeOut(acrestoplant);
+                break;
+            case GERSTE:
+                gerste.plant(acrestoplant);
+                depot.takeOut(acrestoplant);
+                break;
+            case ROGGEN:
+                roggen.plant(acrestoplant);
+                depot.takeOut(acrestoplant);
+                break;
+            default:
+                break;
+        }
         return true;
     }
 

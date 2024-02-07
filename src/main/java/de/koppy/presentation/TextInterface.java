@@ -1,6 +1,7 @@
 package de.koppy.presentation;
 
 import de.koppy.domainmodel.CityState;
+import de.koppy.domainmodel.Plants.GetreideSorten;
 import de.koppy.domainmodel.TurnResult;
 import de.koppy.domainmodel.UserInterface;
 
@@ -44,6 +45,24 @@ public class TextInterface implements UserInterface {
         System.out.println("6. EXPAND");
         System.out.println("7. QUIT GAME");
         System.out.println("8. RUN TURN");
+        return promptInt("Please select an Option: ");
+    }
+
+    public int printPlantMenu() {
+        System.out.println();
+        System.out.println("===== PLANT MENU =====");
+        //nt i = 1;
+        //for(GetreideSorten sorten : GetreideSorten.values()) {
+            //System.out.println(i + ". " + sorten.toString() + " pflanzen.");
+          //  i++;
+        //}
+        System.out.println("1. MAIS");
+        System.out.println("2. WEIZEN");
+        System.out.println("3. GERSTE");
+        System.out.println("4. HIRSE");
+        System.out.println("5. REIS");
+        System.out.println("6. ROGGEN");
+        System.out.println(0 + ". back to GAME-MENU");
         return promptInt("Please select an Option: ");
     }
 
@@ -137,16 +156,16 @@ public class TextInterface implements UserInterface {
     }
 
     @Override
-    public int plant(int bushelsPerAcre, int acrePerResident, CityState city) {
+    public int plant(int bushelsPerAcre, int acrePerResident, CityState city, GetreideSorten sorte) {
         System.out.println();
-        System.out.println("===== PLANT MENU =====");
+        System.out.println("===== "+sorte.toString().toUpperCase()+" MENU =====");
         System.out.println("City status: " + city.getStatus());
         System.out.println("Current price per acre: " + city.getPriceperacre());
         System.out.println();
         boolean valid = false;
         while(!valid) {
             int input = promptInt("How many acres of land do you wish to plant with seed? ");
-            if (city.pflanzen(input)) {
+            if (city.pflanzen(input, sorte)) {
                 System.out.println("New Status: " + city.getStatus());
                 valid = true;
             } else {
